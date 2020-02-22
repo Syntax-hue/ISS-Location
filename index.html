@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ISS Location</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: ghostwhite;
+      }
+      .wrapper {
+        width: 50%;
+        margin: 0 auto;
+        align-items: center;
+        text-align: center;
+      }
+      #map {
+        height: 80vh;
+        width: 75vw;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>Where is the International Space Station?</h1>
+      <p>
+        Latitude: <span id="lat"></span><br />
+        Longitutde: <span id="lon"></span>
+      </p>
+    </div>
+    <div id="map"></div>
+
+    <script>
+      const api_URL = "https://api.wheretheiss.at/v1/satellites/25544";
+
+      async function getISS() {
+        const res = await fetch(api_URL);
+        const data = await res.json();
+        const { latitude, longitude } = data;
+        document.getElementById("lat").textContent = latitude;
+        document.getElementById("lon").textContent = longitude;
+        return {
+          lat: latitude,
+          lng: longitude
+        };
+      }
+
+      setInterval(getISS, 1000);
+
+      async function initMap() {
+        var ISS = await getISS();
+        var map = await new google.maps.Map(document.getElementById("map"), {
+          zoom: 3,
+          center: ISS
+        });
+        var marker = await new google.maps.Marker({
+          position: ISS,
+          map: map
+        });
+      }
+    </script>
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPLmV8NA91e_4ZYk4cttYoX_4U5n_5sMM&callback=initMap"
+    ></script>
+  </body>
+</html>
