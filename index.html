@@ -36,7 +36,7 @@
     <script>
       const api_URL = "https://api.wheretheiss.at/v1/satellites/25544";
 
-      async function getISS() {
+      const getISS = async () => {
         const res = await fetch(api_URL);
         const data = await res.json();
         const { latitude, longitude } = data;
@@ -47,8 +47,6 @@
           lng: longitude
         };
       }
-
-      setInterval(getISS, 1000);
 
       async function initMap() {
         var ISS = await getISS();
@@ -62,10 +60,6 @@
         });
       }
     </script>
-    <script
-      async
-      defer
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPLmV8NA91e_4ZYk4cttYoX_4U5n_5sMM&callback=initMap"
-    ></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPLmV8NA91e_4ZYk4cttYoX_4U5n_5sMM&callback=initMap"></script>
   </body>
 </html>
